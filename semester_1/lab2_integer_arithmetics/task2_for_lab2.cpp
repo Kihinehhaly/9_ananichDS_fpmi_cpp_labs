@@ -2,19 +2,18 @@
 
 int main() {
     long long n, result{ 0 }, original, mult{ 1 };
-    int digit, count;
 
     std::cout << "Enter n for task 2: ";
     if (!(std::cin >> n) || n <= 0) {
-        std::cout << "Please, enter long n > 0\n";
+        std::cout << "Please, enter long long n > 0\n";
         std::exit(404);
     }
 
     original = n;
 
     while (n > 0) {
-        count = 0;
-        digit = n % 10;
+        int count = 0;
+        int digit = n % 10;
         long long n_count = original;
 
         while (n_count > 0) {
@@ -32,7 +31,12 @@ int main() {
         n /= 10;
     }
 
-    std::cout << "The final number is " << result;
+    if (result == 0) {
+        std::cout << "Each digit of your number occurs an even number of times :(";
+    }
+    else {
+        std::cout << "The final number is " << result;
+    }
 
     return 0;
 }
