@@ -1,6 +1,5 @@
 #include <iostream>
 #include <random>
-#include <algorithm>
 
 int main() {
     const int NMAX = 10000;
@@ -8,7 +7,7 @@ int main() {
     long double sum{ 0 };
     double static_array[NMAX];
 
-    std::cout << "Enter the length for the array: ";
+    std::cout << "Enter the length for the static array: ";
     if (!(std::cin >> n) || n > 10000) {
         std::cout << "\nPlease, next time enter integer n < 10000";
         std::exit(404);
@@ -25,9 +24,9 @@ int main() {
     }
     if (variant == 1) {
         double lower, upper;
-        std::cout << "Enter the double calculation boundaries: ";
+        std::cout << "Enter the real calculation boundaries: ";
         if (!(std::cin >> lower >> upper)) {
-            std::cout << "You had one task: enter double boundaries...";
+            std::cout << "You had one task: enter real boundaries...";
             std::exit(404);
         }
 
@@ -66,7 +65,7 @@ int main() {
         sum += static_array[i];
     }
 
-    std::cout << "\n\n1) Sum = " << sum << "\n";
+    std::cout << "\n\n1) Sum of odd elements = " << sum << "\n";
 
 
     long double mult{ 1 };
@@ -80,7 +79,7 @@ int main() {
     }
 
     if (static_array[first_number] >= 0) {
-        std::cout << "\n2) There are no negative numbers\n";
+        std::cout << "\n2) There are no negative numbers in array\n";
     }
     else {
         for (int i = n - 1; i > 0; i--) {
@@ -91,18 +90,19 @@ int main() {
         }
 
         if (first_number == last_number) {
-            std::cout << "\n2) There's only one negetive number\n";
+            std::cout << "\n2) There's only one negetive number in array\n";
         }
         else {
             for (int i = first_number + 1; i < last_number; i++) {
                 mult = mult * static_array[i];
             }
-            std::cout << "\n2) The result is " << mult << "\n";
+            std::cout << "\n2) Product of elements between the first and last negative elements =  "
+                << mult << "\n";
         }
     }
 
     int element_number_in_new_array{ 0 };
-    std::cout << "\n3) Yor new array: \n";
+    std::cout << "\n3) Yor new array without element |value| <= 1 : \n";
 
     for (int i = 0; i < n; i++) {
         if (static_array[i] > 1 || static_array[i] < -1) {

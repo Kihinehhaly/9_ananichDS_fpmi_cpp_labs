@@ -1,7 +1,6 @@
 #include <iostream>
 #include <random>
 #include <cmath>
-#include <algorithm>
 
 float counting_differens(float array[], int n, int item_number) {
     float differens, sum_before{ 0 }, sum_after{ 0 };
@@ -27,7 +26,7 @@ float counting_differens(float array[], int n, int item_number) {
 int main() {
 
     int n, variant;
-    std::cout << "Enter the lenth of your array: ";
+    std::cout << "Enter the lenth of your dynamic array: ";
     if (!(std::cin >> n)) {
         std::cout << "Please, next time enter integer n";
         std::exit(404);
@@ -46,9 +45,9 @@ int main() {
     }
     if (variant == 1) {
         double lower, upper;
-        std::cout << "Enter the double calculation boundaries: ";
+        std::cout << "Enter the real calculation boundaries: ";
         if (!(std::cin >> lower >> upper)) {
-            std::cout << "You had one task: enter double boundaries...";
+            std::cout << "You had one task: enter real boundaries...";
             std::exit(404);
         }
 
@@ -79,7 +78,7 @@ int main() {
         }
     }
     else {
-        std::cout << "I asked to you enter 1 or 2 >:(";
+        std::cout << "I asked you to enter 1 or 2 >:(";
         std::exit(404);
     }
 
@@ -97,7 +96,8 @@ int main() {
         }
     }
 
-    std::cout << "\n\n1) The number you were looking for is " << number << "\n";
+    std::cout << "\n\n1) The element with the smallest difference in the sum of the elements before and after it is "
+        << number << " in the array\n";
 
     float max_element{ abs(dynamic_array[0]) };
     int number_of_max_element{ 1 };
@@ -109,13 +109,13 @@ int main() {
         }
     }
 
-    std::cout << "\n2) The maximum modulo element = " << max_element
-        << " and is " << number_of_max_element << " in a row\n";
+    std::cout << "\n2) The element with the maximum absolute value is " << max_element
+        << " and is found at index " << number_of_max_element << " in the array\n";
 
     float a, b;
-    std::cout << "\n3) Insert double borders, please:";
+    std::cout << "\n3) Insert real borders for interval, please: ";
     if (!(std::cin >> a >> b)) {
-        std::cout << "You had one task: enter double boundaries...";
+        std::cout << "You had one task: enter real boundaries...";
         std::exit(404);
     }
 
@@ -124,7 +124,7 @@ int main() {
     }
 
     int element_number_in_new_array{ 0 };
-    std::cout << "\nYor new array: \n";
+    std::cout << "\nYor new array without elements from the interval: \n";
 
     for (int i = 0; i < n; i++) {
         if (dynamic_array[i] > b || dynamic_array[i] < a) {
