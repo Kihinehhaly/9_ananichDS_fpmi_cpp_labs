@@ -1,18 +1,45 @@
 #include <iostream>
 #include <random>
 
+void filing_array_with_random_number(double* array, int lenth_of_array) {
+    double lower, upper;
+    std::cout << "Enter the real calculation boundaries: ";
+    if (!(std::cin >> lower >> upper)) {
+        std::cout << "You had one task: enter real boundaries...";
+        std::exit(404);
+    }
+
+    if (lower > upper) {
+        std::swap(lower, upper);
+    }
+
+    std::mt19937 gen(45218965);
+    std::uniform_real_distribution<double> dist(lower, upper);
+
+    for (int i = 0; i < lenth_of_array; i++) {
+        array[i] = dist(gen);
+    }
+}
+
+void printing_array(double* array, int lenth_of_array) {
+    for (int i = 0; i < lenth_of_array; i++) {
+        std::cout << array[i] << "   ";
+    }
+    std::cout << "\n";
+}
+
 int main() {
     const int NMAX = 10000;
-    int n, variant;
+    int length, variant;
     long double sum{ 0 };
     double static_array[NMAX];
 
     std::cout << "Enter the length for the static array: ";
-    if (!(std::cin >> n) || n > 10000) {
+    if (!(std::cin >> length) || length > 10000) {
         std::cout << "\nPlease, next time enter integer n < 10000";
         std::exit(404);
     }
-    else if (n < 0) {
+    else if (length < 0) {
         std::cout << "How do you imagine that? ~_~";
         std::exit(404);
     }
@@ -23,33 +50,15 @@ int main() {
         std::exit(404);
     }
     if (variant == 1) {
-        double lower, upper;
-        std::cout << "Enter the real calculation boundaries: ";
-        if (!(std::cin >> lower >> upper)) {
-            std::cout << "You had one task: enter real boundaries...";
-            std::exit(404);
-        }
 
-        if (lower > upper) {
-            std::swap(lower, upper);
-        }
-
-        std::mt19937 gen(45218965);
-        std::uniform_real_distribution<double> dist(lower, upper);
-
-        for (int i = 0; i < n; i++) {
-            static_array[i] = dist(gen);
-        }
+        filing_array_with_random_number(static_array, length);
 
         std::cout << "\nThis is your random numbers:\n";
-        for (int i = 0; i < n; i++) {
-            std::cout << static_array[i] << "   ";
-        }
-        std::cout << "\n";
+        printing_array(static_array, length);
     }
     else if (variant == 2) {
-        std::cout << "Then enter your " << n << " elements:\n";
-        for (int i = 0; i < n; i++) {
+        std::cout << "Then enter your " << length << " elements:\n";
+        for (int i = 0; i < length; i++) {
             if (!(std::cin >> static_array[i])) {
                 std::cout << "Next time enter real numbers";
                 std::exit(404);
@@ -61,7 +70,7 @@ int main() {
         std::exit(404);
     }
 
-    for (int i = 0; i < n; i += 2) {
+    for (int i = 0; i < length; i += 2) {
         sum += static_array[i];
     }
 
@@ -69,9 +78,9 @@ int main() {
 
 
     long double mult{ 1 };
-    int first_number{ 0 }, last_number{ n };
+    int first_number{ 0 }, last_number{ length };
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < length; i++) {
         if (static_array[i] < 0) {
             first_number = i;
             break;
@@ -82,7 +91,7 @@ int main() {
         std::cout << "\n2) There are no negative numbers in array\n";
     }
     else {
-        for (int i = n - 1; i > 0; i--) {
+        for (int i = length - 1; i > 0; i--) {
             if (static_array[i] < 0) {
                 last_number = i;
                 break;
@@ -102,23 +111,20 @@ int main() {
     }
 
     int element_number_in_new_array{ 0 };
-    std::cout << "\n3) Yor new array without element |value| <= 1 : \n";
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < length; i++) {
         if (static_array[i] > 1 || static_array[i] < -1) {
             static_array[element_number_in_new_array] = static_array[i];
             element_number_in_new_array++;
         }
     }
 
-    for (int i = element_number_in_new_array; i < n; i++) {
+    for (int i = element_number_in_new_array; i < length; i++) {
         static_array[i] = 0;
     }
 
-    for (int i = 0; i < n; i++) {
-        std::cout << static_array[i] << "   ";
-    }
-    std::cout << "\n";
+    std::cout << "\n3) Yor new array without element |value| <= 1 : \n";
+    printing_array(static_array, length);
 
     return 0;
 }
