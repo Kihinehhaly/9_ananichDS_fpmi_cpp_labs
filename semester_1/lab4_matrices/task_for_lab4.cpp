@@ -2,12 +2,28 @@
 #include <random>
 #include <iomanip>
 
+void deleting_matrices(int** matrices, int length) {
+    for (int i = 0; i < length; i++) {
+        delete[] matrices[i];
+    }
+    delete[] matrices;
+}
+
 void input_length(int& length) {
     std::cout << "Enther the lenth of the side of you matrice: ";
     if (!(std::cin >> length) || length < 1) {
         std::cout << "Next time enter integer length > 0";
         std::exit(404);
     }
+}
+
+int get_variant() {
+    int variant;
+    if (!(std::cin >> variant)) {
+        std::cout << "Next time enter integers";
+    }
+
+    return variant;
 }
 
 void creating_matrices(int**& matrices, int length) {
@@ -17,24 +33,30 @@ void creating_matrices(int**& matrices, int length) {
     }
 }
 
-void filing_matrices_with_random_number(int** matr, int length) {
-    int lower, upper;
-    std::cout << "Enter the integer calculation boundaries: ";
+void entering_random_borders(int& lower, int& upper, int** matrices, int length) {
+    std::cout << "\nEnter the integer calculation boundaries: ";
     if (!(std::cin >> lower >> upper)) {
         std::cout << "You had one task: enter integer boundaries...";
+
+        deleting_matrices(matrices, length);
+
         std::exit(404);
     }
 
     if (lower > upper) {
         std::swap(lower, upper);
     }
+}
 
-    std::mt19937 gen(45218965);
+void filing_matrices_with_random_number(int** matr, int length, std::mt19937* gen) {
+    int lower, upper;
+    entering_random_borders(lower, upper, matr, length);
+
     std::uniform_int_distribution<int> dist(lower, upper);
 
     for (int i = 0; i < length; i++) {
         for (int j = 0; j < length; j++) {
-            matr[i][j] = dist(gen);
+            matr[i][j] = dist(*gen);
         }
     }
 }
@@ -44,6 +66,9 @@ void manual_input(int** matr, int length) {
         for (int j = 0; j < length; j++) {
             if (!(std::cin >> matr[i][j])) {
                 std::cout << "Next time enter integers >:(";
+
+                deleting_matrices(matr, length);
+
                 std::exit(404);
             }
         }
@@ -60,35 +85,35 @@ void printing_matrices(int** matr, int length) {
 }
 
 void chousing_variant_of_input(int** matrices, int length) {
-    int variant;
-
-    std::cout << "Do you want a random numbers(enter 1) or the ones you'll enter(enter 2)?\n";
-    if (!(std::cin >> variant)) {
-        std::cout << "Next time enter 1 or 2 >:(";
-        std::exit(404);
-    }
+    std::cout << "\nDo you want a random numbers(enter 1) or the ones you'll enter(enter 2)?\n";
+    int variant = get_variant();
     if (variant == 1) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
 
-        filing_matrices_with_random_number(matrices, length);
+        filing_matrices_with_random_number(matrices, length, &gen);
 
         std::cout << "\nThis is your random numbers:\n";
         printing_matrices(matrices, length);
     }
     else if (variant == 2) {
 
-        std::cout << "Then enter your elements:\n";
+        std::cout << "\nThen enter your elements:\n";
         manual_input(matrices, length);
 
     }
     else {
-        std::cout << "I asked to you enter 1 or 2 >:(";
+        std::cout << "\nI asked to you enter 1 or 2 >:(";
+
+        deleting_matrices(matrices, length);
+
         std::exit(404);
     }
 }
 
 void swaping_coloms(int** matr, int length) {
     bool find_zero = false;
-    for (int j = 0; j < length; j++) {
+    for (int j = 1; j < length; j++) {
         if (matr[0][j] == 0) {
             for (int i = 0; i < length; i++) {
                 std::swap(matr[i][j], matr[i][0]);
@@ -120,13 +145,6 @@ void finding_max_element(int** matr, int length) {
     std::cout << "\n2) Max element is " << max_element << "\n";
 }
 
-void deleting_matrices(int** matrices, int length) {
-    for (int i = 0; i < length; i++) {
-        delete[] matrices[i];
-    }
-    delete[] matrices;
-}
-
 int main() {
     int length;
     input_length(length);
@@ -144,3 +162,4 @@ int main() {
 
     return 0;
 }
+
