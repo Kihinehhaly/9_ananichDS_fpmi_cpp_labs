@@ -2,23 +2,29 @@
 #include <random>
 #include <cmath>
 
-void filing_array_with_random_numbers(double* array, int lenth_of_array) {
-    double lower, upper;
-    std::cout << "\nEnter the real calculation boundaries: ";
+void entering_random_borders(double& lower, double& upper, double* array) {
+    std::cout << "\nEnter the integer calculation boundaries: ";
     if (!(std::cin >> lower >> upper)) {
-        std::cout << "You had one task: enter real boundaries...";
+        std::cout << "You had one task: enter integer boundaries...";
+
+        delete[] array;
+
         std::exit(404);
     }
 
     if (lower > upper) {
         std::swap(lower, upper);
     }
+}
 
-    std::mt19937 gen(45218965);
+void filing_array_with_random_numbers(double* array, int lenth_of_array, std::mt19937* gen) {
+    double lower, upper;
+    entering_random_borders(lower, upper, array);
+
     std::uniform_real_distribution<double> dist(lower, upper);
 
     for (int i = 0; i < lenth_of_array; i++) {
-        array[i] = dist(gen);
+        array[i] = dist(*gen);
     }
 }
 
@@ -68,10 +74,14 @@ int main() {
     std::cout << "\nDo you want a random numbers(enter 1) or the ones you'll enter(enter 2)? ";
     if (!(std::cin >> variant)) {
         std::cout << "Next time enter 1 or 2 >:(";
+        delete[] dynamic_array;
         std::exit(404);
     }
     if (variant == 1) {
-        filing_array_with_random_numbers(dynamic_array, length);
+        std::random_device rd;
+        std::mt19937 gen(rd());
+
+        filing_array_with_random_numbers(dynamic_array, length, &gen);
 
         std::cout << "\nThis is your random numbers:\n";
         print_array(dynamic_array, length);
@@ -81,12 +91,18 @@ int main() {
         for (int i = 0; i < length; i++) {
             if (!(std::cin >> dynamic_array[i])) {
                 std::cout << "Next time enter real numbers";
+
+                delete[] dynamic_array;
+
                 std::exit(404);
             }
         }
     }
     else {
         std::cout << "I asked you to enter 1 or 2 >:(";
+
+        delete[] dynamic_array;
+
         std::exit(404);
     }
 
