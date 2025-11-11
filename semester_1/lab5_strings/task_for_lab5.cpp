@@ -11,16 +11,16 @@ void filling_line(std::string& line) {
 	}
 }
 
-void printing_line(std::string line) {
+void printing_line(const std::string& line) {
 	std::cout << "\nYour new line: " << line << "\n";
 }
 
 void changing_letters(std::string& line) {
 	for (char& symbol : line) {
-		if (symbol >= 'A' && symbol <= 'Z') {
+		if (std::isupper(symbol)) {
 			symbol = std::tolower(symbol);
 		}
-		else if (symbol >= 'a' && symbol <= 'z') {
+		else if (std::islower(symbol)) {
 			symbol = std::toupper(symbol);
 		}
 	}
@@ -42,6 +42,13 @@ std::vector<std::string> divide_into_words(const std::string& line, const std::s
 
 		begin_index = line.find_first_not_of(delimeters, end_index);
 		end_index = line.find_first_of(delimeters, begin_index);
+	}
+
+	if (words.size() == 0) {
+		throw "\nThere's no words!\n";
+	}
+	else if (words.size() == 1) {
+		throw "\nThere's only one word!\n";
 	}
 
 	return words;
@@ -66,7 +73,7 @@ std::vector<std::string> saving_delimeters(const std::string& line, const std::s
 	return delimeters_in_line;
 }
 
-int amount_of_capital_letters(std::string word) {
+int amount_of_capital_letters(const std::string& word) {
 	int amount_of_capital_letters{ 0 };
 
 	for (char symbol : word) {
@@ -81,11 +88,11 @@ int amount_of_capital_letters(std::string word) {
 void bubble_sort_words(std::vector<std::string>& words) {
 	for (int i = 0; i < words.size() - 1; i++) {
 		for (int j = 0; j < words.size() - i - 1; j++) {
-			if (amount_of_capital_letters(words[j]) > 
-				amount_of_capital_letters(words[j+1])) {
+			if (amount_of_capital_letters(words[j]) >
+				amount_of_capital_letters(words[j + 1])) {
 				std::swap(words[j], words[j + 1]);
 			}
-			else if (amount_of_capital_letters(words[j]) == 
+			else if (amount_of_capital_letters(words[j]) ==
 				amount_of_capital_letters(words[j + 1])) {
 				if (std::toupper(words[j][0]) > std::toupper(words[j + 1][0])) {
 					std::swap(words[j], words[j + 1]);
@@ -138,11 +145,11 @@ void sorting_line(std::string line, const std::string& delimeters) {
 
 int main() {
 	std::string line;
-	std::string delimeters = " ,.?!:;/|";
+	std::string delimeters = R"( ,.?!:;/|\)";
 
 	try {
 		filling_line(line);
-		
+
 		changing_letters(line);
 
 		sorting_line(line, delimeters);
