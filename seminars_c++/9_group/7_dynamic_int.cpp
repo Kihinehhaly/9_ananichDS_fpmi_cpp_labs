@@ -10,6 +10,12 @@ public:
         std::cout << "освобождение памяти\n";
     }
 
+    DynamicInt(const DynamicInt& other)
+      : p(new int()) {
+    
+        *p = *other.p;
+    }
+
     int get () { return *p; }
 };
 
