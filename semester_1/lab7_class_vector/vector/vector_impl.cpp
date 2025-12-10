@@ -1,11 +1,8 @@
 #include "vector_impl.h"
 
-Vector::Vector() {
-    std::cout << "Default.\n";
-}
+Vector::Vector() {}
 
 Vector::Vector(size_t n) : size_(n), capacity_(n), data_(new int[capacity_]) {
-    std::cout << "User defined.\n";
     for (size_t i = 0; i < n; ++i) {
         data_[i] = 0;
     }
@@ -13,11 +10,10 @@ Vector::Vector(size_t n) : size_(n), capacity_(n), data_(new int[capacity_]) {
 
 Vector::Vector(const Vector& other)
     : size_(other.size_), capacity_(other.capacity_), data_(new int[capacity_]) {
-    std::cout << "Copy ctor.\n";
     std::copy(other.data_, other.data_ + size_, data_);
 }
 
-Vector::Vector(std::initializer_list<char> list)
+Vector::Vector(std::initializer_list<int> list)
     : size_(list.size()), capacity_(list.size()), data_(new int[capacity_]) {
 
     size_t i = 0;
@@ -29,13 +25,10 @@ Vector::Vector(std::initializer_list<char> list)
 }
 
 Vector::~Vector() {
-    std::cout << "Destructor.\n";
     delete[] data_;
 }
 
 Vector& Vector::operator=(const Vector& other) {
-    std::cout << "operator=.\n";
-
     if (this == &other) {
         return *this;
     }
@@ -83,46 +76,51 @@ size_t Vector::Capacity() const {
 }
 
 void Vector::PushBack(int element) {
-    if (capacity_ <= size_) {
-        if (capacity_ == 0) {
-            capacity_ = 1;
-        }
-        Vector temp(capacity_ * 2);
-        Swap(temp);
+    if (size_ >= capacity_) {
+        size_t new_capacity = (capacity_ == 0) ? 1 : capacity_ * 2;
+        Reserve(new_capacity);
     }
     data_[size_++] = element;
 }
 
 void Vector::PopBack() {
     if (size_ > 0) {
-        data_[size_ - 1] = 0;
         --size_;
     }
 }
 
 void Vector::Clear() {
     while (size_ > 0) {
-        data_[size_ - 1] = 0;
         --size_;
     }
 }
 
 void Vector::Reserve(size_t other_capacity) {
-    if (capacity_ < other_capacity) {
-        Vector temp(other_capacity);
-        Swap(temp);
+    if (capacity_ >= other_capacity) {
+        return;
     }
+
+    int* new_data = new int[other_capacity];
+
+    for (size_t i = 0; i < size_; ++i) {
+        new_data[i] = data_[i];
+    }
+
+    delete[] data_;
+
+    data_ = new_data;
+    capacity_ = other_capacity;
 }
 
 std::ostream& operator<<(std::ostream& out, const Vector& vect) {
     if (vect.data_ == nullptr) {
-        out << "[]\n";
+        out << "[]";
     } else {
         out << "[";
-        for (size_t i = 0; i < vect.Size(); ++i) {
-            out << vect[i];
+        for (size_t i = 0; i < vect.Size() - 1; ++i) {
+            out << vect[i] << ", ";
         }
-        out << "]\n";
+        out << vect[vect.Size() - 1] << "]";
     }
     return out;
 }

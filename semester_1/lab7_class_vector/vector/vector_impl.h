@@ -16,7 +16,7 @@ public:
 
     Vector(const Vector&);
 
-    Vector(std::initializer_list<char>);
+    Vector(std::initializer_list<int>);
 
     ~Vector();
 
