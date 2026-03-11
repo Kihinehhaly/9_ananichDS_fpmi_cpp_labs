@@ -25,6 +25,11 @@ private:
 	double b_;
 public:
 	LinearFunction(double, double);
+	LinearFunction(const LinearFunction&);
+	LinearFunction(LinearFunction&&) noexcept;
+	LinearFunction& operator=(const LinearFunction&);
+	LinearFunction& operator=(LinearFunction&&) noexcept;
+	~LinearFunction() override = default;
 
 	double evaluate(double) const override;
 	int solve(double&, double&) const override;
@@ -41,6 +46,11 @@ private:
 	double c_;
 public:
 	QuadraticFunction(double, double, double);
+	QuadraticFunction(const QuadraticFunction&);
+	QuadraticFunction(QuadraticFunction&&) noexcept;
+	QuadraticFunction& operator=(const QuadraticFunction&);
+	QuadraticFunction& operator=(QuadraticFunction&&) noexcept;
+	~QuadraticFunction() override = default;
 
 	double evaluate(double) const override;
 	int solve(double&, double&) const override;

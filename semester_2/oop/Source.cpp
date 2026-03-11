@@ -66,7 +66,7 @@ void task2(Function* functions[], int size) {
 
 void task3(Function* functions[], int size) {
     double x0, y0;
-    std::cout << "Enter your x0 and y0: ";
+    std::cout << "\nEnter your x0 and y0 for task3: ";
     if (!(std::cin >> x0 >> y0)) {
         throw std::invalid_argument("\nYou entered wrong type of number!");
     }
@@ -202,5 +202,5 @@ int main() {
         delete functions[i];
     }
 
-	return 0;
+    return 0;
 }
