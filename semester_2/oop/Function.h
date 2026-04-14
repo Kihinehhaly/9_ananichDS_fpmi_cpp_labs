@@ -3,6 +3,8 @@
 #include <iostream>
 #include <cmath>
 
+enum Function_ID { LinearFunction_ID = 0, QuadraticFunction_ID };
+
 class Function {
 private:
 	size_t id_;
@@ -17,6 +19,8 @@ public:
 	virtual double evaluate(double x) const = 0;
 	virtual int solve(double& solution1, double& solution2) const = 0;
 	virtual void print_equation(std::ostream& out) const = 0;
+
+	static Function* createFunction(Function_ID, double, double, double);
 };
 
 class LinearFunction : public Function {
@@ -59,4 +63,20 @@ public:
 	double get_a() const;
 	double get_b() const;
 	double get_c() const;
+};
+
+class Factory {
+public:
+	virtual Function* createFunction(double, double, double) = 0;
+	virtual ~Factory() {}
+};
+
+class LinearFactory : public Factory {
+public:
+	Function* createFunction(double, double, double) override;
+};
+
+class QuadraticFactory : public Factory {
+public:
+	Function* createFunction(double, double, double) override;
 };

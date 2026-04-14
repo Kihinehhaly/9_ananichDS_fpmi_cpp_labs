@@ -8,6 +8,20 @@ size_t Function::get_id() const {
 	return id_;
 }
 
+Function* Function::createFunction(Function_ID id, double a, double b, double c) {
+	Function* f;
+	switch (id) {
+	case LinearFunction_ID:
+		f = new LinearFunction(a, b);
+		break;
+	case QuadraticFunction_ID:
+		f = new QuadraticFunction(a, b, c);
+		break;
+	default:
+		throw std::invalid_argument("Something wrong with Function_ID");
+	}
+	return f;
+}
 
 LinearFunction::LinearFunction(double a, double b) : a_(a), b_(b) {}
 
@@ -134,4 +148,12 @@ double QuadraticFunction::get_b() const {
 
 double QuadraticFunction::get_c() const {
 	return c_;
+}
+
+Function* LinearFactory::createFunction(double a, double  b, double c) {
+	return new LinearFunction(a, b);
+}
+
+Function* QuadraticFactory::createFunction(double a, double  b, double c) {
+	return new QuadraticFunction(a, b, c);
 }
