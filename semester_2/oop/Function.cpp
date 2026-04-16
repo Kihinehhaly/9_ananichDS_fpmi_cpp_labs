@@ -8,7 +8,7 @@ size_t Function::get_id() const {
 	return id_;
 }
 
-Function* Function::createFunction(Function_ID id, double a, double b, double c) {
+Function* Function::create_function(Function_ID id, double a, double b, double c) {
 	Function* f;
 	switch (id) {
 	case LinearFunction_ID:
@@ -150,10 +150,20 @@ double QuadraticFunction::get_c() const {
 	return c_;
 }
 
-Function* LinearFactory::createFunction(double a, double  b, double c) {
+Function* LinearFactory::create_function(double a, double  b, double c) {
 	return new LinearFunction(a, b);
 }
 
-Function* QuadraticFactory::createFunction(double a, double  b, double c) {
+Function* QuadraticFactory::create_function(double a, double  b, double c) {
 	return new QuadraticFunction(a, b, c);
+}
+
+void CompositeFunction::add_function(Function* f) {
+	functions.push_back(f);
+}
+
+CompositeFunction::~CompositeFunction() {
+	for (int i = 0; i < functions.size(); i++) {
+		delete functions[i];
+	}
 }

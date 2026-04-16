@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <cmath>
+#include <vector>
 
 enum Function_ID { LinearFunction_ID = 0, QuadraticFunction_ID };
 
@@ -20,7 +21,7 @@ public:
 	virtual int solve(double& solution1, double& solution2) const = 0;
 	virtual void print_equation(std::ostream& out) const = 0;
 
-	static Function* createFunction(Function_ID, double, double, double);
+	static Function* create_function(Function_ID, double, double, double);
 };
 
 class LinearFunction : public Function {
@@ -67,16 +68,29 @@ public:
 
 class Factory {
 public:
-	virtual Function* createFunction(double, double, double) = 0;
+	virtual Function* create_function(double, double, double) = 0;
 	virtual ~Factory() {}
 };
 
 class LinearFactory : public Factory {
 public:
-	Function* createFunction(double, double, double) override;
+	Function* create_function(double, double, double) override;
 };
 
 class QuadraticFactory : public Factory {
 public:
-	Function* createFunction(double, double, double) override;
+	Function* create_function(double, double, double) override;
+};
+
+class CompositeFunction : public Function {
+private:
+	std::vector<Function*> functions;
+public:
+	void add_function(Function*);
+	~CompositeFunction();
+	double evaluate(double x) const override { return 0; }
+	int solve(double& solution1, double& solution2) const override { return 0; }
+	void print_equation(std::ostream& out) const override {}
+	int size() { return functions.size(); }
+	Function* at(int i) { return functions[i]; }
 };
